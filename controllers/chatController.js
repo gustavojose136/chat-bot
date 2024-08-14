@@ -2,7 +2,7 @@ const { getActiveChat, createChatChannel } = require('../models/chatModel');
 const twilio = require('twilio');
 const { accountSid, authToken } = require('../config/twilioConfig');
 const client = twilio(accountSid, authToken);
-const Conversation = require('../models/conversationModel'); // Certifique-se de que a variável Conversation é importada corretamente aqui.
+const Conversation = require('../models/conversationModel'); 
 
 const insertMockMessages = async () => {
     const mockMessages = [
@@ -13,7 +13,6 @@ const insertMockMessages = async () => {
         { sender: 'bot', message: '✅ Seu agendamento foi confirmado com o número 123456. Digite "menu" para voltar ao menu principal.' }
     ];
 
-    // Certifique-se de que a variável Conversation é usada corretamente após a inicialização
     const conversation = new Conversation({ userPhoneNumber: '+5511999999999', messages: mockMessages });
     await conversation.save();
 
@@ -48,6 +47,8 @@ const updateState = async (fromNumber, newState, options = []) => {
 };
 
 const handleIncomingMessage = async (req, res) => {
+    console.log(req.body);
+
     const twiml = new twilio.twiml.MessagingResponse();
     const incomingMsg = req.body.Body.toLowerCase();
     const fromNumber = req.body.From;
