@@ -1,8 +1,9 @@
 const { getActiveChat, createChatChannel } = require('../models/chatModel');
 const twilio = require('twilio');
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const { accountSid, authToken } = require('../config/twilioConfig');
 const client = twilio(accountSid, authToken);
-const Conversation = require('../models/conversationModel'); 
+const Conversation = require('../models/conversationModel');
 
 const insertMockMessages = async () => {
     const mockMessages = [
@@ -48,6 +49,13 @@ const updateState = async (fromNumber, newState, options = []) => {
 
 const handleIncomingMessage = async (req, res) => {
     console.log(req.body);
+
+    const response = new MessagingResponse();
+    const message = response.message();
+    message.body('Hello World!');
+    response.redirect('https://demo.twilio.com/welcome/sms/');
+
+    console.log(response.toString());
 
     const twiml = new twilio.twiml.MessagingResponse();
     const incomingMsg = req.body.Body.toLowerCase();
